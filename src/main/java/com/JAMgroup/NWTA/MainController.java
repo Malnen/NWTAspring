@@ -38,6 +38,12 @@ public class MainController {
     @Autowired
     private TransakcjaRepository transkcjaRepository;
 
+    @Autowired
+    private KoszykRepository koszykRepository;
+
+    @Autowired
+    private KartaProduktowRepository kartaProduktowRepository;
+
     //Dział
     @PostMapping(path = "dzial/add")
     public @ResponseBody
@@ -393,4 +399,106 @@ public class MainController {
         return "Deleted";
     }
 
+    //Koszyk
+    @PostMapping(path = "koszyk/add")
+    public @ResponseBody
+    String addNewKoszyk(@RequestBody Map<String, Object> body) {
+        Koszyk k = new Koszyk();
+        k.setKontoLoginKonta(body.get("kontoLoginKonta").toString());
+
+        koszykRepository.save(k);
+        return "Saved";
+
+    }
+
+    @PutMapping("/koszyk/{numerKoszyka}")
+    public Koszyk replaceKoszyk(@RequestBody Map<String, Object> body, @PathVariable int numerKoszyka) {
+
+        return koszykRepository.findById(numerKoszyka)
+                .map(koszyk -> {
+                    koszyk.setKontoLoginKonta(body.get("kontoLoginKonta").toString());
+                    return koszykRepository.save(koszyk);
+                })
+                .orElseGet(() -> {
+                    Koszyk k = new Koszyk();
+                    k.setNumerKoszyka(Integer.parseInt(body.get("numerKoszyka").toString()));
+                    k.setKontoLoginKonta(body.get("kontoLoginKonta").toString());
+                    return koszykRepository.save(k);
+                });
+    }
+
+    @GetMapping(path = "koszyk/all")
+    public @ResponseBody
+    Iterable<Koszyk> getKoszyk() {
+        return koszykRepository.findAll();
+    }
+
+    @GetMapping(path = "koszyk/{numerKoszyka}")
+    public ResponseEntity<Koszyk> getKoszykById(@PathVariable("numerKoszyka") int numerKoszyka) {
+        Optional<Koszyk> opt = koszykRepository.findById(numerKoszyka);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/koszyk/{kodTransakcji}")
+    String deleteKoszykById(@PathVariable int kodTransakcji) {
+        koszykRepository.deleteById(kodTransakcji);
+        return "Deleted";
+    }
+
+    // KartaProduktow
+    @PostMapping(path = "kartaProduktow/add")
+    public @ResponseBody
+    String addNewKartaProduktow(@RequestBody Map<String, Object> body) {
+        KartaProduktow k = new KartaProduktow();
+        k.setIloscElementow(Integer.parseInt(body.get("iloscElementow").toString()));
+        k.setKoszykNumerKoszyka(Integer.parseInt(body.get("koszykNumerKoszyka").toString()));
+        k.setProduktIdProduktu(Integer.parseInt(body.get("produktIdProduktu").toString()));
+        kartaProduktowRepository.save(k);
+        return "Saved";
+
+    }
+
+    @PutMapping("/kartaProduktow/{numerKoszyka}")
+    public KartaProduktow replaceKartaProduktow(@RequestBody Map<String, Object> body, @PathVariable int numerKoszyka) {
+
+        return kartaProduktowRepository.findById(numerKoszyka)
+                .map(koszyk -> {
+
+                    koszyk.setIloscElementow(Integer.parseInt(body.get("iloscElementow").toString()));
+                    koszyk.setKoszykNumerKoszyka(Integer.parseInt(body.get("koszykNumerKoszyka").toString()));
+                    koszyk.setProduktIdProduktu(Integer.parseInt(body.get("produktIdProduktu").toString()));
+                    return kartaProduktowRepository.save(koszyk);
+                })
+                .orElseGet(() -> {
+                    KartaProduktow k = new KartaProduktow();
+                    k.setIloscElementow(Integer.parseInt(body.get("iloscElementow").toString()));
+                    k.setKoszykNumerKoszyka(Integer.parseInt(body.get("koszykNumerKoszyka").toString()));
+                    k.setProduktIdProduktu(Integer.parseInt(body.get("produktIdProduktu").toString()));
+                    return kartaProduktowRepository.save(k);
+                });
+    }
+
+    @GetMapping(path = "kartaProduktow/all")
+    public @ResponseBody
+    Iterable<KartaProduktow> getKartaProduktow() {
+        return kartaProduktowRepository.findAll();
+    }
+
+    @GetMapping(path = "kartaProduktow/{numerKoszyka}")
+    public ResponseEntity<KartaProduktow> getKartaProduktowById(@PathVariable("numerKoszyka") int numerKoszyka) {
+        Optional<KartaProduktow> opt = kartaProduktowRepository.findById(numerKoszyka);
+        if (opt.isPresent()) {
+            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/kartaProduktow/{numerKoszyka}")
+    String deleteKartaProduktowById(@PathVariable int numerKoszyka) {
+        kartaProduktowRepository.deleteById(numerKoszyka);
+        return "Deleted";
+    }
 }
