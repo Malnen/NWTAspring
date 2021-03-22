@@ -63,6 +63,12 @@ public class MainController {
         return dzialRepository.findAll();
     }
 
+    @GetMapping(path = "dzial/{id}/produkt/all")
+    public @ResponseBody
+    Iterable<Produkt> getAllProduktsInDzial(@PathVariable int id) {
+        return produktRepository.findByDzialNumerDzialu(id);
+    }
+
     @PutMapping("/dzial/{id}")
     public Dzial replaceDzial(@RequestBody Map<String, Object> body, @PathVariable int id) {
 
@@ -293,6 +299,7 @@ public class MainController {
         p.setCena(Integer.parseInt(body.get("cena").toString()));
         p.setOpis(body.get("opis").toString());
         p.setZdjeciePogladowe(body.get("zdjeciePogladowe").toString());
+        p.setNazwa(body.get("nazwa").toString());
         p.setDzialNumerDzialu(Integer.parseInt(body.get("dzialNumerDzialu").toString()));
 
         produktRepository.save(p);
@@ -309,6 +316,7 @@ public class MainController {
                     produkt.setOpis(body.get("opis").toString());
                     produkt.setZdjeciePogladowe(body.get("zdjeciePogladowe").toString());
                     produkt.setDzialNumerDzialu(Integer.parseInt(body.get("dzialNumerDzialu").toString()));
+                    produkt.setNazwa(body.get("nazwa").toString());
                     return produktRepository.save(produkt);
                 })
                 .orElseGet(() -> {
@@ -316,6 +324,7 @@ public class MainController {
                     p.setCena(Integer.parseInt(body.get("cena").toString()));
                     p.setOpis(body.get("opis").toString());
                     p.setZdjeciePogladowe(body.get("zdjeciePogladowe").toString());
+                    p.setNazwa(body.get("nazwa").toString());
                     p.setDzialNumerDzialu(Integer.parseInt(body.get("dzialNumerDzialu").toString()));
                     return produktRepository.save(p);
                 });

@@ -13,6 +13,28 @@ public class Produkt {
     @Column(name = "IdProduktu")
     private int idProduktu;
 
+    public String getNazwa() {
+        return nazwa;
+    }
+
+    public void setNazwa(String nazwa) {
+        this.nazwa = nazwa;
+    }
+    
+    @Column(name = "ZdjeciePogladowe")
+    private String zdjeciePogladowe;
+
+    @Column(name = "Opis")
+    private String opis;
+
+    @Column(name = "Cena")
+    private int cena;
+
+    @Column(name = "DzialNumerDzialu")
+    private int dzialNumerDzialu;
+    @Column(name = "Nazwa")
+    private String nazwa;
+
     public int getIdProduktu() {
         return idProduktu;
     }
@@ -52,16 +74,5 @@ public class Produkt {
     public void setDzialNumerDzialu(int dzialNumerDzialu) {
         this.dzialNumerDzialu = dzialNumerDzialu;
     }
-    
-    @Column(name = "ZdjeciePogladowe")
-    private String zdjeciePogladowe;
-    
-    @Column(name = "Opis")
-    private String opis;
-    
-    @Column(name = "Cena")
-    private int cena;
-    
-    @Column(name = "DzialNumerDzialu")
-    private int dzialNumerDzialu;
+
 }
