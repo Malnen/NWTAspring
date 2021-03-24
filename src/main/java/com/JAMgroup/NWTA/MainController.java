@@ -298,7 +298,7 @@ public class MainController {
         Produkt p = new Produkt();
         p.setCena(Integer.parseInt(body.get("cena").toString()));
         p.setOpis(body.get("opis").toString());
-        p.setZdjeciePogladowe(body.get("zdjeciePogladowe").toString());
+        p.setZdjecieProduktu(body.get("zdjecieProduktu").toString());
         p.setNazwa(body.get("nazwa").toString());
         p.setDzialNumerDzialu(Integer.parseInt(body.get("dzialNumerDzialu").toString()));
 
@@ -314,7 +314,7 @@ public class MainController {
                 .map(produkt -> {
                     produkt.setCena(Integer.parseInt(body.get("cena").toString()));
                     produkt.setOpis(body.get("opis").toString());
-                    produkt.setZdjeciePogladowe(body.get("zdjeciePogladowe").toString());
+                    produkt.setZdjecieProduktu(body.get("zdjecieProduktu").toString());
                     produkt.setDzialNumerDzialu(Integer.parseInt(body.get("dzialNumerDzialu").toString()));
                     produkt.setNazwa(body.get("nazwa").toString());
                     return produktRepository.save(produkt);
@@ -323,7 +323,7 @@ public class MainController {
                     Produkt p = new Produkt();
                     p.setCena(Integer.parseInt(body.get("cena").toString()));
                     p.setOpis(body.get("opis").toString());
-                    p.setZdjeciePogladowe(body.get("zdjeciePogladowe").toString());
+                    p.setZdjecieProduktu(body.get("zdjecieProduktu").toString());
                     p.setNazwa(body.get("nazwa").toString());
                     p.setDzialNumerDzialu(Integer.parseInt(body.get("dzialNumerDzialu").toString()));
                     return produktRepository.save(p);

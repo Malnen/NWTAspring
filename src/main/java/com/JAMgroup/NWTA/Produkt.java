@@ -21,8 +21,8 @@ public class Produkt {
         this.nazwa = nazwa;
     }
     
-    @Column(name = "ZdjeciePogladowe")
-    private String zdjeciePogladowe;
+    @Column(name = "ZdjecieProduktu")
+    private String zdjecieProduktu;
 
     @Column(name = "Opis")
     private String opis;
@@ -43,12 +43,12 @@ public class Produkt {
         this.idProduktu = idProduktu;
     }
 
-    public String getZdjeciePogladowe() {
-        return zdjeciePogladowe;
+    public String getZdjecieProduktu() {
+        return zdjecieProduktu;
     }
 
-    public void setZdjeciePogladowe(String zdjeciePogladowe) {
-        this.zdjeciePogladowe = zdjeciePogladowe;
+    public void setZdjecieProduktu(String zdjeciePogladowe) {
+        this.zdjecieProduktu = zdjeciePogladowe;
     }
 
     public String getOpis() {
