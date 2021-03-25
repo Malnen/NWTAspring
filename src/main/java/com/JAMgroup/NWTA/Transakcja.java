@@ -3,8 +3,10 @@ package com.JAMgroup.NWTA;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "transakcja")
 public class Transakcja {
 
     @Id

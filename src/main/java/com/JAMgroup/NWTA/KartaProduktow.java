@@ -4,8 +4,10 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "kartaProduktow")
 public class KartaProduktow {
 
     @Id
