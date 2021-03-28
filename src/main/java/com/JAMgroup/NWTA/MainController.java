@@ -2,6 +2,7 @@ package com.JAMgroup.NWTA;
 
 import java.util.Map;
 import java.util.Optional;
+import java.sql.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class MainController {
     private KartaProduktowRepository kartaProduktowRepository;
 
     //Dział
-    @PostMapping(path = "dzial/add")
+    @PostMapping(path = "/dzial/add")
     public @ResponseBody
     String addNewDzial(@RequestBody Map<String, Object> body) {
         Dzial d = new Dzial();
@@ -57,13 +58,13 @@ public class MainController {
 
     }
 
-    @GetMapping(path = "dzial/all")
+    @GetMapping(path = "/dzial/all")
     public @ResponseBody
     Iterable<Dzial> getDzialy() {
         return dzialRepository.findAll();
     }
 
-    @GetMapping(path = "dzial/{id}/produkt/all")
+    @GetMapping(path = "/dzial/{id}/produkt/all")
     public @ResponseBody
     Iterable<Produkt> getAllProduktsInDzial(@PathVariable int id) {
         return produktRepository.findByDzialNumerDzialu(id);
@@ -88,13 +89,13 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "dzial/{id}")
+    @GetMapping(path = "/dzial/{id}")
     public ResponseEntity<Dzial> getDzialById(@PathVariable("id") int id) {
         Optional<Dzial> opt = dzialRepository.findById(id);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/dzial/{id}")
@@ -104,7 +105,7 @@ public class MainController {
     }
 
     //Punkt
-    @PostMapping(path = "punkt/add")
+    @PostMapping(path = "/punkt/add")
     public @ResponseBody
     String addNewPunkt(@RequestBody Map<String, Object> body) {
         ZoologicznyPunktSprzedazy p = new ZoologicznyPunktSprzedazy();
@@ -142,19 +143,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "punkt/all")
+    @GetMapping(path = "/punkt/all")
     public @ResponseBody
     Iterable<ZoologicznyPunktSprzedazy> getPunkty() {
         return zoologicznyPunktSprzedazyRepository.findAll();
     }
 
-    @GetMapping(path = "punkt/{id}")
+    @GetMapping(path = "/punkt/{id}")
     public ResponseEntity<ZoologicznyPunktSprzedazy> getZoologicznyPunktSprzedazyById(@PathVariable("id") int id) {
         Optional<ZoologicznyPunktSprzedazy> opt = zoologicznyPunktSprzedazyRepository.findById(id);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/punkt/{id}")
@@ -164,7 +165,7 @@ public class MainController {
     }
 
     //Konto 
-    @PostMapping(path = "konto/add")
+    @PostMapping(path = "/konto/add")
     public @ResponseBody
     String addNewKonto(@RequestBody Map<String, Object> body) {
         Konto k = new Konto();
@@ -172,7 +173,7 @@ public class MainController {
         k.setEmail(body.get("email").toString());
         k.setHaslo(body.get("haslo").toString());
         k.setLogin(body.get("login").toString());
-
+        k.setDataDolaczenia(new Timestamp(System.currentTimeMillis()));
         kontoRepository.save(k);
         return "Saved";
 
@@ -199,19 +200,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "konto/all")
+    @GetMapping(path = "/konto/all")
     public @ResponseBody
     Iterable<Konto> getKonta() {
         return kontoRepository.findAll();
     }
 
-    @GetMapping(path = "konto/{login}")
+    @GetMapping(path = "/konto/{login}")
     public ResponseEntity<Konto> getKontoByLogin(@PathVariable("login") String login) {
         Optional<Konto> opt = kontoRepository.findById(login);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/konto/{login}")
@@ -221,7 +222,7 @@ public class MainController {
     }
 
     //Klient
-    @PostMapping(path = "klient/add")
+    @PostMapping(path = "/klient/add")
     public @ResponseBody
     String addNewKlient(@RequestBody Map<String, Object> body) {
         Klient k = new Klient();
@@ -270,19 +271,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "klient/all")
+    @GetMapping(path = "/klient/all")
     public @ResponseBody
     Iterable<Klient> getKlient() {
         return klientRepository.findAll();
     }
 
-    @GetMapping(path = "klient/{nrKlienta}")
+    @GetMapping(path = "/klient/{nrKlienta}")
     public ResponseEntity<Klient> getKlientByLogin(@PathVariable("nrKlienta") int nrKlienta) {
         Optional<Klient> opt = klientRepository.findById(nrKlienta);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/klient/{nrKlienta}")
@@ -292,7 +293,7 @@ public class MainController {
     }
 
     //Produkt
-    @PostMapping(path = "produkt/add")
+    @PostMapping(path = "/produkt/add")
     public @ResponseBody
     String addNewProdukt(@RequestBody Map<String, Object> body) {
         Produkt p = new Produkt();
@@ -330,19 +331,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "produkt/all")
+    @GetMapping(path = "/produkt/all")
     public @ResponseBody
     Iterable<Produkt> getProdukt() {
         return produktRepository.findAll();
     }
 
-    @GetMapping(path = "produkt/{idProduktu}")
+    @GetMapping(path = "/produkt/{idProduktu}")
     public ResponseEntity<Produkt> getProduktById(@PathVariable("idProduktu") int idProduktu) {
         Optional<Produkt> opt = produktRepository.findById(idProduktu);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/produkt/{idProduktu}")
@@ -352,7 +353,7 @@ public class MainController {
     }
 
     //Transakcja
-    @PostMapping(path = "transakcja/add")
+    @PostMapping(path = "/transakcja/add")
     public @ResponseBody
     String addNewTransakcja(@RequestBody Map<String, Object> body) {
         Transakcja t = new Transakcja();
@@ -387,19 +388,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "transakcja/all")
+    @GetMapping(path = "/transakcja/all")
     public @ResponseBody
     Iterable<Transakcja> getTransakcja() {
         return transkcjaRepository.findAll();
     }
 
-    @GetMapping(path = "transakcja/{kodTransakcji}")
+    @GetMapping(path = "/transakcja/{kodTransakcji}")
     public ResponseEntity<Transakcja> getTransakcjaById(@PathVariable("kodTransakcji") int kodTransakcji) {
         Optional<Transakcja> opt = transkcjaRepository.findById(kodTransakcji);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/transakcja/{kodTransakcji}")
@@ -409,7 +410,7 @@ public class MainController {
     }
 
     //Koszyk
-    @PostMapping(path = "koszyk/add")
+    @PostMapping(path = "/koszyk/add")
     public @ResponseBody
     String addNewKoszyk(@RequestBody Map<String, Object> body) {
         Koszyk k = new Koszyk();
@@ -420,12 +421,12 @@ public class MainController {
 
     }
 
-    @PutMapping("/koszyk/{numerKoszyka}")
-    public Koszyk replaceKoszyk(@RequestBody Map<String, Object> body, @PathVariable int numerKoszyka) {
+    @PutMapping("/koszyk/{kontoLoginKonta}")
+    public Koszyk replaceKoszyk(@RequestBody Map<String, Object> body, @PathVariable String kontoLoginKonta) {
 
-        return koszykRepository.findById(numerKoszyka)
+        return koszykRepository.findByKontoLoginKonta(kontoLoginKonta)
                 .map(koszyk -> {
-                    koszyk.setKontoLoginKonta(body.get("kontoLoginKonta").toString());
+                    koszyk.setNumerKoszyka(Integer.parseInt(body.get("numerKoszyka").toString()));
                     return koszykRepository.save(koszyk);
                 })
                 .orElseGet(() -> {
@@ -436,19 +437,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "koszyk/all")
+    @GetMapping(path = "/koszyk/all")
     public @ResponseBody
     Iterable<Koszyk> getKoszyk() {
         return koszykRepository.findAll();
     }
 
-    @GetMapping(path = "koszyk/{numerKoszyka}")
-    public ResponseEntity<Koszyk> getKoszykById(@PathVariable("numerKoszyka") int numerKoszyka) {
-        Optional<Koszyk> opt = koszykRepository.findById(numerKoszyka);
+    @GetMapping(path = "/koszyk/{kontoLoginKonta}")
+    public ResponseEntity<Koszyk> getKoszykById(@PathVariable("kontoLoginKonta") String kontoLoginKonta) {
+        Optional<Koszyk> opt = koszykRepository.findByKontoLoginKonta(kontoLoginKonta);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/koszyk/{kodTransakcji}")
@@ -458,7 +459,7 @@ public class MainController {
     }
 
     // KartaProduktow
-    @PostMapping(path = "kartaProduktow/add")
+    @PostMapping(path = "/kartaProduktow/add")
     public @ResponseBody
     String addNewKartaProduktow(@RequestBody Map<String, Object> body) {
         KartaProduktow k = new KartaProduktow();
@@ -490,19 +491,19 @@ public class MainController {
                 });
     }
 
-    @GetMapping(path = "kartaProduktow/all")
+    @GetMapping(path = "/kartaProduktow/all")
     public @ResponseBody
     Iterable<KartaProduktow> getKartaProduktow() {
         return kartaProduktowRepository.findAll();
     }
 
-    @GetMapping(path = "kartaProduktow/{numerKoszyka}")
+    @GetMapping(path = "/kartaProduktow/{numerKoszyka}")
     public ResponseEntity<KartaProduktow> getKartaProduktowById(@PathVariable("numerKoszyka") int numerKoszyka) {
         Optional<KartaProduktow> opt = kartaProduktowRepository.findById(numerKoszyka);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/kartaProduktow/{numerKoszyka}")
