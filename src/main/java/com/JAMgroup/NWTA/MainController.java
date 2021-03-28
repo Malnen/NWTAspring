@@ -498,17 +498,14 @@ public class MainController {
     }
 
     @GetMapping(path = "/kartaProduktow/{numerKoszyka}")
-    public ResponseEntity<KartaProduktow> getKartaProduktowById(@PathVariable("numerKoszyka") int numerKoszyka) {
-        Optional<KartaProduktow> opt = kartaProduktowRepository.findByKoszykNumerKoszyka(numerKoszyka);
-        if (opt.isPresent()) {
-            return new ResponseEntity<>(opt.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public @ResponseBody
+    Iterable<KartaProduktow> getKartaProduktowByKoszykId(@PathVariable("numerKoszyka") int numerKoszyka) {
+        return kartaProduktowRepository.findByKoszykNumerKoszyka(numerKoszyka);
     }
 
-    @DeleteMapping("/kartaProduktow/{numerKoszyka}")
-    String deleteKartaProduktowById(@PathVariable int numerKoszyka) {
-        kartaProduktowRepository.deleteById(numerKoszyka);
+    @DeleteMapping("/kartaProduktow/{numerKarty}")
+    String deleteKartaProduktowById(@PathVariable int numerKarty) {
+        kartaProduktowRepository.deleteById(numerKarty);
         return "Deleted";
     }
 }
