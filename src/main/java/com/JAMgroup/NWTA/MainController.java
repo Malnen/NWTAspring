@@ -499,7 +499,7 @@ public class MainController {
 
     @GetMapping(path = "/kartaProduktow/{numerKoszyka}")
     public ResponseEntity<KartaProduktow> getKartaProduktowById(@PathVariable("numerKoszyka") int numerKoszyka) {
-        Optional<KartaProduktow> opt = kartaProduktowRepository.findById(numerKoszyka);
+        Optional<KartaProduktow> opt = kartaProduktowRepository.findByKoszykNumerKoszyka(numerKoszyka);
         if (opt.isPresent()) {
             return new ResponseEntity<>(opt.get(), HttpStatus.OK);
         }
