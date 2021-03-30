@@ -466,6 +466,7 @@ public class MainController {
         k.setIloscElementow(Integer.parseInt(body.get("iloscElementow").toString()));
         k.setKoszykNumerKoszyka(Integer.parseInt(body.get("koszykNumerKoszyka").toString()));
         k.setProduktIdProduktu(Integer.parseInt(body.get("produktIdProduktu").toString()));
+        k.setDataDodania(java.sql.Timestamp.valueOf(body.get("dataDodania").toString()));
         kartaProduktowRepository.save(k);
         return "Saved";
 
@@ -480,6 +481,7 @@ public class MainController {
                     koszyk.setIloscElementow(Integer.parseInt(body.get("iloscElementow").toString()));
                     koszyk.setKoszykNumerKoszyka(Integer.parseInt(body.get("koszykNumerKoszyka").toString()));
                     koszyk.setProduktIdProduktu(Integer.parseInt(body.get("produktIdProduktu").toString()));
+                    koszyk.setDataDodania(java.sql.Timestamp.valueOf(body.get("dataDodania").toString()));
                     return kartaProduktowRepository.save(koszyk);
                 })
                 .orElseGet(() -> {
@@ -487,6 +489,7 @@ public class MainController {
                     k.setIloscElementow(Integer.parseInt(body.get("iloscElementow").toString()));
                     k.setKoszykNumerKoszyka(Integer.parseInt(body.get("koszykNumerKoszyka").toString()));
                     k.setProduktIdProduktu(Integer.parseInt(body.get("produktIdProduktu").toString()));
+                    k.setDataDodania(java.sql.Timestamp.valueOf(body.get("dataDodania").toString()));
                     return kartaProduktowRepository.save(k);
                 });
     }
