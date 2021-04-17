@@ -1,4 +1,3 @@
-
 package com.JAMgroup.NWTA;
 
 import org.apache.catalina.Context;
@@ -16,7 +15,7 @@ public class ServerConfig {
     @Bean
     public ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
-            @Override
+          /* @Override
             protected void postProcessContext(Context context) {
                 SecurityConstraint securityConstraint = new SecurityConstraint();
                 securityConstraint.setUserConstraint("CONFIDENTIAL");
@@ -24,9 +23,10 @@ public class ServerConfig {
                 collection.addPattern("/*");
                 securityConstraint.addCollection(collection);
                 context.addConstraint(securityConstraint);
-            }
+            }*/
         };
-        tomcat.addAdditionalTomcatConnectors(getHttpConnector());
+       /* tomcat.addAdditionalTomcatConnectors(getHttpConnector());
+        tomcat.addAdditionalTomcatConnectors(getHttpConnector2());*/
         return tomcat;
     }
 
@@ -38,4 +38,15 @@ public class ServerConfig {
         connector.setRedirectPort(8443);
         return connector;
     }
+
+    private Connector getHttpConnector2() {
+        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+        connector.setScheme("https");
+        connector.setPort(80);
+        connector.setSecure(false);
+        connector.setRedirectPort(8443);
+        return connector;
+    }
+
 }
+
