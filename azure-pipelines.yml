@@ -17,7 +17,8 @@ stages:
   jobs:
   - job: Build
     displayName: Build
-    pool: nwta
+    pool:
+      vmImage: 'windows-latest'
     steps:
     - task: Docker@2
       displayName: Build an image
