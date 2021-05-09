@@ -25,17 +25,17 @@ public class ServerConfig {
                 context.addConstraint(securityConstraint);
             }*/
         };
-        tomcat.addAdditionalTomcatConnectors(getHttpConnector());
-        //tomcat.addAdditionalTomcatConnectors(getHttpConnector2());
+       /* tomcat.addAdditionalTomcatConnectors(getHttpConnector());
+        tomcat.addAdditionalTomcatConnectors(getHttpConnector2());*/
         return tomcat;
     }
 
     private Connector getHttpConnector() {
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
         connector.setScheme("http");
-        connector.setPort(80);
+        connector.setPort(8880);
         connector.setSecure(false);
-        connector.setRedirectPort(8888);
+        connector.setRedirectPort(8443);
         return connector;
     }
 
