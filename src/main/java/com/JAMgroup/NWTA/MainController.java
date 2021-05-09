@@ -45,7 +45,11 @@ public class MainController {
     @Autowired
     private KartaProduktowRepository kartaProduktowRepository;
 
-
+    @GetMapping(path = "/")
+    public @ResponseBody
+    String welcome() {
+        return "JAMgroup wita :)";
+    }
 
     //Dział
     @PostMapping(path = "/dzial/add")
