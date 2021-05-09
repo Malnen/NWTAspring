@@ -48,7 +48,7 @@ public class MainController {
     @GetMapping(path = "/")
     public @ResponseBody
     String welcome() {
-        return "JAMgroup wita :)";
+        return "<b>JAMgroup wita :)<b>";
     }
 
     //Dział
