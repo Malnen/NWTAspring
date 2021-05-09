@@ -27,6 +27,6 @@ steps:
     displayName: Push image
     inputs:
       containerRegistry: 'dockerNwta'
-      repository: 'docker_spring'
+      repository: 'nwta'
       command: 'push'
       tags: 'latest'
