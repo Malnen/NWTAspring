@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.JAMgroup</groupId>
-    <artifactId>NWTA</artifactId>
+    <artifactId>nwta</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>NWTA</name>
+    <name>nwta</name>
     <description>Sklep zoolgiczny</description>
     <properties>
         <mainClass>com.JAMgroup.NWTA.NwtaApplication</mainClass>
