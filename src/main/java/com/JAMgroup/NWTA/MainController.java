@@ -517,7 +517,7 @@ public class MainController {
         kartaProduktowRepository.deleteById(numerKarty);
         return "Deleted";
     }
-
+    
     @DeleteMapping("/kartaProduktow/deleteProdukty/{numerKarty}")
     String deleteProduktyByKartaProduktowId(@PathVariable int numerKarty) {
         kartaProduktowRepository.deleteByKoszykNumerKoszyka(numerKarty);
