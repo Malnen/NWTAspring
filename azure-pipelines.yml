@@ -24,9 +24,9 @@ steps:
       publishJUnitResults: false
       jdkVersionOption: '1.11'
   - task: Docker@2
-    displayName: Push image
     inputs:
-      containerRegistry: 'dockerNwta'
-      repository: 'nwta'
+      containerRegistry: 'nwtaJamgroup'
+      repository: 'nwtaJamGroup'
       command: 'push'
-      tags: 'latest'
+      displayName: Push image
+      Dockerfile: '**/Dockerfile'
