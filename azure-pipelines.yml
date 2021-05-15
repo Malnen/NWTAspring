@@ -22,11 +22,11 @@ steps:
       mavenPomFile: 'pom.xml'
       goals: 'spring-boot:build-image'
       publishJUnitResults: false
-      jdkVersionOption: '1.11'
+      jdkVersionOption: '1.11'  
   - task: Docker@2
+    displayName: Push image
     inputs:
-      containerRegistry: 'nwtaJamgroup'
+      containerRegistry: 'dockerNwta'
       repository: 'nwta'
       command: 'push'
-      tags: 'latest'  
-      displayName: Push image 
+      tags: 'latest'
