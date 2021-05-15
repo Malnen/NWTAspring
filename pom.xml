@@ -76,7 +76,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <image>
-                        <name>dockernwta.azurecr.io/${project.artifactId}</name>
+                        <name>nwtajamgroup.azurecr.io/${project.artifactId}</name>
                     </image>
                     <layers>
                         <enabled>true</enabled>
