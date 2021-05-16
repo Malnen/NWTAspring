@@ -24,10 +24,20 @@ public class Konto {
 
     @Column(name = "Awatar")
     private String awatar;
-
+    
+    @Column(name = "Rola")
+    private String role;
 
     @Column(name = "DataDolaczenia")
     private java.sql.Timestamp DataDolaczenia;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public String getLogin() {
         return login;
