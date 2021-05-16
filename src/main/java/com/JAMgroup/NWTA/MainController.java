@@ -1,8 +1,17 @@
 package com.JAMgroup.NWTA;
 
+import com.smattme.MysqlExportService;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Properties;
+import javax.activation.DataSource;
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -512,15 +521,17 @@ public class MainController {
         return kartaProduktowRepository.findByKoszykNumerKoszyka(numerKoszyka);
     }
 
-    @DeleteMapping("/kartaProduktow/{numerKarty}")
+    @DeleteMapping(path = "/kartaProduktow/{numerKarty}")
     String deleteKartaProduktowById(@PathVariable int numerKarty) {
         kartaProduktowRepository.deleteById(numerKarty);
         return "Deleted";
     }
-    
-    @DeleteMapping("/kartaProduktow/deleteProdukty/{numerKarty}")
+
+    @DeleteMapping(path = "/kartaProduktow/deleteProdukty/{numerKarty}")
     String deleteProduktyByKartaProduktowId(@PathVariable int numerKarty) {
+        LOGGER.info("Deleted: " + numerKarty);
         kartaProduktowRepository.deleteByKoszykNumerKoszyka(numerKarty);
         return "Deleted";
     }
+
 }
