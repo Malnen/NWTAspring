@@ -522,16 +522,16 @@ public class MainController {
     }
 
     @DeleteMapping(path = "/kartaProduktow/{numerKarty}")
-    String deleteKartaProduktowById(@PathVariable int numerKarty) {
+    ResponseEntity<String> deleteKartaProduktowById(@PathVariable int numerKarty) {
         kartaProduktowRepository.deleteById(numerKarty);
-        return "Deleted";
+        return new ResponseEntity<>("Delete forever", HttpStatus.MOVED_PERMANENTLY);
     }
 
     @DeleteMapping(path = "/kartaProduktow/deleteProdukty/{numerKarty}")
-    String deleteProduktyByKartaProduktowId(@PathVariable int numerKarty) {
+     ResponseEntity<String> deleteProduktyByKartaProduktowId(@PathVariable int numerKarty) {
         LOGGER.info("Deleted: " + numerKarty);
         kartaProduktowRepository.deleteByKoszykNumerKoszyka(numerKarty);
-        return "Deleted";
+        return new ResponseEntity<>("Delete forever", HttpStatus.MOVED_PERMANENTLY);
     }
 
 }
