@@ -26,11 +26,11 @@ public class KartaProduktow {
     @Column(name = "DataDodania")
     private java.sql.Timestamp dataDodania;
 
-    public int getNumerKoszyka() {
+    public int getNumerKarty() {
         return numerKarty;
     }
 
-    public void setNumerKoszyka(int numerKoszyka) {
+    public void setNumerKarty(int numerKoszyka) {
         this.numerKarty = numerKoszyka;
     }
 

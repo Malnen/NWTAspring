@@ -4,13 +4,18 @@ import com.smattme.MysqlExportService;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Properties;
 import javax.activation.DataSource;
+import javax.servlet.http.HttpServletResponse;
 import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 @Controller
 public class MainController {
@@ -119,6 +127,13 @@ public class MainController {
         return "Deleted";
     }
 
+    @GetMapping("/dzial/export")
+    public void dzialToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"NumerDzialu", "Nazwa", "Opis", "ZoologicznyPunktSprzedazyIdPunktuSprzedazy"};
+        String[] nameMapping = {"numerDzialu", "nazwa", "opis", "idPunktuSprzedazy"};
+        exportToCSV(response, dzialRepository.findAll(), "dzial", csvHeader, nameMapping);
+    }
+
     //Punkt
     @PostMapping(path = "/punkt/add")
     public @ResponseBody
@@ -179,6 +194,13 @@ public class MainController {
         return "Deleted";
     }
 
+    @GetMapping("/punkt/export")
+    public void punktToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"IdPunktuSprzedazy", "DataPowstania", "DataPowstania", "TechnologieWykonaniaWitryny", "Autorzy", "Opis"};
+        String[] nameMapping = {"idPunktuSprzedazy", "dataPowstania", "dataOstatniejEdycjiWitryny", "technologieWykonaniaWitryny", "autorzy", "opis"};
+        exportToCSV(response, zoologicznyPunktSprzedazyRepository.findAll(), "zoologicznyPunktSprzedazyRepository", csvHeader, nameMapping);
+    }
+
     //Konto 
     @PostMapping(path = "/konto/add")
     public @ResponseBody
@@ -234,6 +256,13 @@ public class MainController {
     String deleteKontoByLogin(@PathVariable String login) {
         kontoRepository.deleteById(login);
         return "Deleted";
+    }
+
+    @GetMapping("/konto/export")
+    public void kontoToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"Login", "Haslo", "Email", "Awatar", "Rola", "DataDolaczenia"};
+        String[] nameMapping = {"login", "haslo", "email", "awatar", "role", "DataDolaczenia"};
+        exportToCSV(response, kontoRepository.findAll(), "konto", csvHeader, nameMapping);
     }
 
     //Klient
@@ -307,6 +336,13 @@ public class MainController {
         return "Deleted";
     }
 
+    @GetMapping("/klient/export")
+    public void klientToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"NrKlienta", "Imie", "Nazwisko", "Ulica", "NumerDomu", "Miasto", "InneDane", "IdPunktuSprzedazy", "KontoLoginKonta", "Opis"};
+        String[] nameMapping = {"nrKlienta", "imie", "nazwisko", "ulica", "numerDomu", "miasto", "inneDane", "idPunktuSprzedazy", "kontoLoginKonta", "opis"};
+        exportToCSV(response, klientRepository.findAll(), "klient", csvHeader, nameMapping);
+    }
+
     //Produkt
     @PostMapping(path = "/produkt/add")
     public @ResponseBody
@@ -367,6 +403,13 @@ public class MainController {
         return "Deleted";
     }
 
+    @GetMapping("/produkt/export")
+    public void produktToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"IdProduktu", "ZdjecieProduktu", "Opis", "Cena", "DzialNumerDzialu", "Nazwa"};
+        String[] nameMapping = {"idProduktu", "zdjecieProduktu", "opis", "cena", "dzialNumerDzialu", "nazwa"};
+        exportToCSV(response, produktRepository.findAll(), "produkt", csvHeader, nameMapping);
+    }
+
     //Transakcja
     @PostMapping(path = "/transakcja/add")
     public @ResponseBody
@@ -424,6 +467,13 @@ public class MainController {
         return "Deleted";
     }
 
+    @GetMapping("/transakcja/export")
+    public void transakcjaToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"KodTransakcji", "SumaTransakcji", "IloscProduktow", "ProduktIdProduktu", "KlientIdKlienta"};
+        String[] nameMapping = {"kodTransakcji", "sumaTransakcji", "iloscProduktow", "produktIdProduktu", "klientIdKlienta"};
+        exportToCSV(response, transkcjaRepository.findAll(), "transakcja", csvHeader, nameMapping);
+    }
+
     //Koszyk
     @PostMapping(path = "/koszyk/add")
     public @ResponseBody
@@ -471,6 +521,13 @@ public class MainController {
     String deleteKoszykById(@PathVariable int kodTransakcji) {
         koszykRepository.deleteById(kodTransakcji);
         return "Deleted";
+    }
+
+    @GetMapping("/koszyk/export")
+    public void koszykToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"NumerKoszyka", "KontoLoginKonta"};
+        String[] nameMapping = {"numerKoszyka", "kontoLoginKonta"};
+        exportToCSV(response, koszykRepository.findAll(), "koszyk", csvHeader, nameMapping);
     }
 
     // KartaProduktow
@@ -528,10 +585,38 @@ public class MainController {
     }
 
     @DeleteMapping(path = "/kartaProduktow/deleteProdukty/{numerKarty}")
-     ResponseEntity<String> deleteProduktyByKartaProduktowId(@PathVariable int numerKarty) {
+    ResponseEntity<String> deleteProduktyByKartaProduktowId(@PathVariable int numerKarty) {
         LOGGER.info("Deleted: " + numerKarty);
         kartaProduktowRepository.deleteByKoszykNumerKoszyka(numerKarty);
         return new ResponseEntity<>("Delete forever", HttpStatus.MOVED_PERMANENTLY);
     }
 
+    @GetMapping("/kartaProduktow/export")
+    public void kartaProduktowToCSV(HttpServletResponse response) throws IOException {
+        String[] csvHeader = {"NumerKarty", "KoszykNumerKoszyka", "ProduktIdProduktu", "IloscElementow", "DataDodania"};
+        String[] nameMapping = {"numerKarty", "koszykNumerKoszyka", "produktIdProduktu", "iloscElementow", "dataDodania"};
+        exportToCSV(response, kartaProduktowRepository.findAll(), "kartaProduktow", csvHeader, nameMapping);
+    }
+
+    private <T> void exportToCSV(HttpServletResponse response, Iterable<T> list, String name, String[] csvHeader, String[] nameMapping) throws IOException {
+        response.setContentType("text/csv");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=" + name + "_" + currentDateTime + ".csv";
+        response.setHeader(headerKey, headerValue);
+        response.setCharacterEncoding("UTF-8");
+
+        ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+
+        csvWriter.writeHeader(csvHeader);
+
+        for (T t : list) {
+            csvWriter.write(t, nameMapping);
+        }
+
+        csvWriter.close();
+
+    }
 }

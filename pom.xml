@@ -38,9 +38,20 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>net.sf.supercsv</groupId>
+            <artifactId>super-csv</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.smattme</groupId>
             <artifactId>mysql-backup4j</artifactId>
             <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api.grpc</groupId>
+            <artifactId>proto-google-common-protos</artifactId>
+            <version>1.18.0</version>
+            <type>jar</type>
         </dependency>
     </dependencies>
 
