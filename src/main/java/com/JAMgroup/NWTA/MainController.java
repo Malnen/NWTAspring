@@ -139,7 +139,7 @@ public class MainController {
     @GetMapping("/dzial/export")
     public void dzialToCSV(HttpServletResponse response) throws IOException {
         String[] csvHeader = {"NumerDzialu", "Nazwa", "Opis", "ZoologicznyPunktSprzedazyIdPunktuSprzedazy"};
-        String[] nameMapping = {"numerDzialu", "nazwa", "opis", "idPunktuSprzedazy"};
+        String[] nameMapping = {"numerDzialu", "nazwa", "opis", "zoologicznyPunktSprzedazyIdPunktuSprzedazy"};
         exportToCSV(response, dzialRepository.findAll(), "dzial", csvHeader, nameMapping);
     }
 
