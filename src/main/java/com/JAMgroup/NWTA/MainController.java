@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.supercsv.cellprocessor.ParseDate;
@@ -631,33 +632,27 @@ public class MainController {
     }
 
     @PostMapping("/import/{table}")
-    public String importFromCsv(@PathVariable String table, @RequestParam("file") MultipartFile file) throws IOException {
-
+    public ResponseEntity<String> importFromCsv(@PathVariable String table, @RequestPart("file") MultipartFile file) throws IOException {
+         
+        ICsvBeanReader beanReader = null;
         try {
-            ICsvBeanReader beanReader = null;
-            try {
-                beanReader = new CsvBeanReader(new InputStreamReader(file.getInputStream()),
-                        CsvPreference.STANDARD_PREFERENCE);
+            beanReader = new CsvBeanReader(new InputStreamReader(file.getInputStream()),
+                    CsvPreference.STANDARD_PREFERENCE);
 
-                // the header elements are used to map the values to the bean (names must match)
-                final String[] header = beanReader.getHeader(true);
-                final CellProcessor[] processors = getProcessors();
-
-                Dzial dzial;
-                while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
-                    dzialRepository.save(dzial);
-                }
-            } catch (Exception e) {
-                return e.getLocalizedMessage();
-            } finally {
-                if (beanReader != null) {
-                    beanReader.close();
-                }
+            // the header elements are used to map the values to the bean (names must match)
+            final String[] header = beanReader.getHeader(true);
+            final CellProcessor[] processors = getProcessors();
+            
+            Dzial dzial;
+            while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
+                dzialRepository.save(dzial);
             }
-        } catch (Exception e) {
-            return e.getLocalizedMessage();
+        } finally {
+            if (beanReader != null) {
+                beanReader.close();
+            }
         }
-        return "ok";
+        return new ResponseEntity<>("Imported", HttpStatus.OK);
     }
 
     private static CellProcessor[] getProcessors() {
