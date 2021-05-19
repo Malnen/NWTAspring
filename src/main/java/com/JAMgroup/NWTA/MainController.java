@@ -84,7 +84,7 @@ public class MainController {
         Dzial d = new Dzial();
         d.setNazwa(body.get("nazwa").toString());
         d.setOpis(body.get("opis").toString());
-        d.setIdPunktuSprzedazy(Integer.parseInt(body.get("idPunktuSprzedazy").toString()));
+        d.setZoologicznyPunktSprzedazyIdPunktuSprzedazy(Integer.parseInt(body.get("idPunktuSprzedazy").toString()));
         dzialRepository.save(d);
         return "Saved";
 
@@ -109,14 +109,14 @@ public class MainController {
                 .map(dzial -> {
                     dzial.setNazwa(body.get("nazwa").toString());
                     dzial.setOpis(body.get("opis").toString());
-                    dzial.setIdPunktuSprzedazy(Integer.parseInt(body.get("idPunktuSprzedazy").toString()));
+                    dzial.setZoologicznyPunktSprzedazyIdPunktuSprzedazy(Integer.parseInt(body.get("idPunktuSprzedazy").toString()));
                     return dzialRepository.save(dzial);
                 })
                 .orElseGet(() -> {
                     Dzial d = new Dzial();
                     d.setNazwa(body.get("nazwa").toString());
                     d.setOpis(body.get("opis").toString());
-                    d.setIdPunktuSprzedazy(Integer.parseInt(body.get("idPunktuSprzedazy").toString()));
+                    d.setZoologicznyPunktSprzedazyIdPunktuSprzedazy(Integer.parseInt(body.get("idPunktuSprzedazy").toString()));
                     return dzialRepository.save(d);
                 });
     }
@@ -656,7 +656,8 @@ public class MainController {
     private static CellProcessor[] getProcessors() {
         return new CellProcessor[]{
             new ParseInt(),
-            new NotNull(),
-            new ParseDouble()};
+            null,
+            null,
+            new ParseInt()};
     }
 }

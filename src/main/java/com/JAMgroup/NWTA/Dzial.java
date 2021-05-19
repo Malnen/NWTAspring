@@ -22,7 +22,7 @@ public class Dzial {
     private String opis;
     
     @Column(name="ZoologicznyPunktSprzedazyIdPunktuSprzedazy")
-    private int idPunktuSprzedazy;
+    private int zoologicznyPunktSprzedazyIdPunktuSprzedazy;
 
     public int getNumerDzialu() {
         return numerDzialu;
@@ -48,12 +48,12 @@ public class Dzial {
         this.opis = opis;
     }
 
-    public int getIdPunktuSprzedazy() {
-        return idPunktuSprzedazy;
+    public int getZoologicznyPunktSprzedazyIdPunktuSprzedazy() {
+        return zoologicznyPunktSprzedazyIdPunktuSprzedazy;
     }
 
-    public void setIdPunktuSprzedazy(int idPunktuSprzedazy) {
-        this.idPunktuSprzedazy = idPunktuSprzedazy;
+    public void setZoologicznyPunktSprzedazyIdPunktuSprzedazy(int idPunktuSprzedazy) {
+        this.zoologicznyPunktSprzedazyIdPunktuSprzedazy = idPunktuSprzedazy;
     }
 
 }
