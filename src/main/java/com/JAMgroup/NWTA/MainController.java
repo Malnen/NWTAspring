@@ -3,6 +3,7 @@ package com.JAMgroup.NWTA;
 import com.smattme.MysqlExportService;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.SQLException;
@@ -31,7 +32,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.supercsv.cellprocessor.ParseDate;
+import org.supercsv.cellprocessor.ParseDouble;
+import org.supercsv.cellprocessor.ParseInt;
+import org.supercsv.cellprocessor.constraint.NotNull;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
@@ -598,6 +607,7 @@ public class MainController {
         exportToCSV(response, kartaProduktowRepository.findAll(), "kartaProduktow", csvHeader, nameMapping);
     }
 
+    //
     private <T> void exportToCSV(HttpServletResponse response, Iterable<T> list, String name, String[] csvHeader, String[] nameMapping) throws IOException {
         response.setContentType("text/csv");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
@@ -618,5 +628,35 @@ public class MainController {
 
         csvWriter.close();
 
+    }
+
+    @PostMapping("/import/{table}")
+    public void importFromCsv(@PathVariable String table, @RequestParam("file") MultipartFile file) throws IOException {
+
+        ICsvBeanReader beanReader = null;
+        try {
+            beanReader = new CsvBeanReader(new InputStreamReader(file.getInputStream()),
+                    CsvPreference.STANDARD_PREFERENCE);
+
+            // the header elements are used to map the values to the bean (names must match)
+            final String[] header = beanReader.getHeader(true);
+            final CellProcessor[] processors = getProcessors();
+            
+            Dzial dzial;
+            while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
+                dzialRepository.save(dzial);
+            }
+        } finally {
+            if (beanReader != null) {
+                beanReader.close();
+            }
+        }
+    }
+
+    private static CellProcessor[] getProcessors() {
+        return new CellProcessor[]{
+            new ParseInt(),
+            new NotNull(),
+            new ParseDouble()};
     }
 }
