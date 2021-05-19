@@ -631,26 +631,33 @@ public class MainController {
     }
 
     @PostMapping("/import/{table}")
-    public void importFromCsv(@PathVariable String table, @RequestParam("file") MultipartFile file) throws IOException {
+    public String importFromCsv(@PathVariable String table, @RequestParam("file") MultipartFile file) throws IOException {
 
-        ICsvBeanReader beanReader = null;
         try {
-            beanReader = new CsvBeanReader(new InputStreamReader(file.getInputStream()),
-                    CsvPreference.STANDARD_PREFERENCE);
+            ICsvBeanReader beanReader = null;
+            try {
+                beanReader = new CsvBeanReader(new InputStreamReader(file.getInputStream()),
+                        CsvPreference.STANDARD_PREFERENCE);
 
-            // the header elements are used to map the values to the bean (names must match)
-            final String[] header = beanReader.getHeader(true);
-            final CellProcessor[] processors = getProcessors();
-            
-            Dzial dzial;
-            while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
-                dzialRepository.save(dzial);
+                // the header elements are used to map the values to the bean (names must match)
+                final String[] header = beanReader.getHeader(true);
+                final CellProcessor[] processors = getProcessors();
+
+                Dzial dzial;
+                while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
+                    dzialRepository.save(dzial);
+                }
+            } catch (Exception e) {
+                return e.getLocalizedMessage();
+            } finally {
+                if (beanReader != null) {
+                    beanReader.close();
+                }
             }
-        } finally {
-            if (beanReader != null) {
-                beanReader.close();
-            }
+        } catch (Exception e) {
+            return e.getLocalizedMessage();
         }
+        return "ok";
     }
 
     private static CellProcessor[] getProcessors() {
