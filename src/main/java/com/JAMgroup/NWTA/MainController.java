@@ -633,20 +633,12 @@ public class MainController {
 
     @PostMapping("/import/{table}")
     public ResponseEntity<String> importFromCsv(@PathVariable String table, @RequestPart("file") MultipartFile file) throws IOException {
-         
+
         ICsvBeanReader beanReader = null;
         try {
             beanReader = new CsvBeanReader(new InputStreamReader(file.getInputStream()),
                     CsvPreference.STANDARD_PREFERENCE);
-
-            // the header elements are used to map the values to the bean (names must match)
-            final String[] header = beanReader.getHeader(true);
-            final CellProcessor[] processors = getProcessors();
-            
-            Dzial dzial;
-            while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
-                dzialRepository.save(dzial);
-            }
+            processTableImport(table.toLowerCase(), beanReader);
         } finally {
             if (beanReader != null) {
                 beanReader.close();
@@ -655,11 +647,120 @@ public class MainController {
         return new ResponseEntity<>("Imported", HttpStatus.OK);
     }
 
-    private static CellProcessor[] getProcessors() {
-        return new CellProcessor[]{
-            new ParseInt(),
-            null,
-            null,
-            new ParseInt()};
+    private void processTableImport(String table, ICsvBeanReader beanReader) throws IOException {
+        String[] header = beanReader.getHeader(true);
+        CellProcessor[] processors;
+        switch (table) {
+            case "dzial": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    null,
+                    null,
+                    new ParseInt()};
+
+                Dzial dzial;
+                while ((dzial = beanReader.read(Dzial.class, header, processors)) != null) {
+                    dzialRepository.save(dzial);
+                }
+            }
+            case "kartaproduktow": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    new ParseInt(),
+                    new ParseInt(),
+                    new ParseInt(),
+                    null};
+
+                KartaProduktow kartaproduktow;
+                while ((kartaproduktow = beanReader.read(KartaProduktow.class, header, processors)) != null) {
+                    kartaProduktowRepository.save(kartaproduktow);
+                }
+            }
+            case "klient": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    new ParseInt(),
+                    new NotNull(),
+                    null};
+
+                Klient klient;
+                while ((klient = beanReader.read(Klient.class, header, processors)) != null) {
+                    klientRepository.save(klient);
+                }
+            }
+            case "konto": {
+                processors = new CellProcessor[]{
+                    new NotNull(),
+                    new NotNull(),
+                    null,
+                    null,
+                    null,
+                    null};
+
+                Konto konto;
+                while ((konto = beanReader.read(Konto.class, header, processors)) != null) {
+                    kontoRepository.save(konto);
+                }
+            }
+            case "koszyk": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    new NotNull()};
+
+                Koszyk koszyk;
+                while ((koszyk = beanReader.read(Koszyk.class, header, processors)) != null) {
+                    koszykRepository.save(koszyk);
+                }
+            }
+            case "produkt": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    null,
+                    null,
+                    new ParseInt(),
+                    new ParseInt(),
+                    new NotNull()};
+
+                Produkt produkt;
+                while ((produkt = beanReader.read(Produkt.class, header, processors)) != null) {
+                    produktRepository.save(produkt);
+                }
+            }
+            case "transakcja": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    new ParseInt(),
+                    new ParseInt(),
+                    new ParseInt(),
+                    new ParseInt()};
+
+                Transakcja transakcja;
+                while ((transakcja = beanReader.read(Transakcja.class, header, processors)) != null) {
+                    transkcjaRepository.save(transakcja);
+                }
+            }
+            case "zoologicznypunktsprzedazy": {
+                processors = new CellProcessor[]{
+                    new ParseInt(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null};
+
+                ZoologicznyPunktSprzedazy zoologicznypunktsprzedazy;
+                while ((zoologicznypunktsprzedazy = beanReader.read(ZoologicznyPunktSprzedazy.class, header, processors)) != null) {
+                    zoologicznyPunktSprzedazyRepository.save(zoologicznypunktsprzedazy);
+                }
+            }
+            default:
+                return;
+        }
     }
 }
