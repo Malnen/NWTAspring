@@ -89,6 +89,9 @@ public class Klient {
     public void setNumerDomu(int numerDomu) {
         this.numerDomu = numerDomu;
     }
+    public void setNumerDomu(String numerDomu) {
+        this.setNumerDomu(Integer.valueOf(numerDomu));
+    }
 
     public String getMiasto() {
         return miasto;

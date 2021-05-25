@@ -13,16 +13,16 @@ public class KartaProduktow {
     @Id
     @Column(name = "NumerKarty")
     private int numerKarty;
-    
+
     @Column(name = "KoszykNumerKoszyka")
     private int koszykNumerKoszyka;
-    
+
     @Column(name = "ProduktIdProduktu")
-    private int produktIdProduktu ;
-    
+    private int produktIdProduktu;
+
     @Column(name = "IloscElementow")
     private int iloscElementow;
-    
+
     @Column(name = "DataDodania")
     private java.sql.Timestamp dataDodania;
 
@@ -64,6 +64,10 @@ public class KartaProduktow {
 
     public void setDataDodania(Timestamp dataDodania) {
         this.dataDodania = dataDodania;
+    }
+
+    public void setDataDodania(String dataDodania) {
+        this.setDataDodania(Timestamp.valueOf(dataDodania));
     }
 
 }

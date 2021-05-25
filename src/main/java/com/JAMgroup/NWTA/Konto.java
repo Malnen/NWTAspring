@@ -1,4 +1,3 @@
-
 package com.JAMgroup.NWTA;
 
 import java.sql.Timestamp;
@@ -9,9 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity 
+@Entity
 @Table(name = "konto")
 public class Konto {
+
     @Id
     @Column(name = "Login")
     private String login;
@@ -24,7 +24,7 @@ public class Konto {
 
     @Column(name = "Awatar")
     private String awatar;
-    
+
     @Column(name = "Rola")
     private String role;
 
@@ -71,13 +71,16 @@ public class Konto {
         this.awatar = awatar;
     }
 
-
     public Timestamp getDataDolaczenia() {
         return DataDolaczenia;
     }
 
     public void setDataDolaczenia(Timestamp DataDolaczenia) {
         this.DataDolaczenia = DataDolaczenia;
+    }
+
+    public void setDataDolaczenia(String DataDolaczenia) {
+        this.setDataDolaczenia(Timestamp.valueOf(DataDolaczenia));
     }
 
 }
